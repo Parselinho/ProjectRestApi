@@ -33,6 +33,7 @@ module.exports = (sequelize) => {
         },
         emailAdress: {
             type: DataTypes.STRING,
+            allowNull: false,
             unique: {
                 msg: 'email already exist'
             },
