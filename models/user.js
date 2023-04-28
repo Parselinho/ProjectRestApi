@@ -1,14 +1,15 @@
 'use strict';
 
-const { Model, DataTypes } = require('sequelize');
+const { Sequelize, Model } = require('sequelize');
 const { sequelize } = require('./index');
 const bcrypt = require('bcrypt');
+const course = require('./course');
 
 module.exports = (sequelize) => {
     class User extends Model {}
     User.init({
         firstName: {
-            type: DataTypes.STRING,
+            type: Sequelize.STRING,
             allowNull: false,
             validate: {
                 notNull: {
@@ -20,7 +21,7 @@ module.exports = (sequelize) => {
             },
         },
         lastName: {
-            type: DataTypes.STRING,
+            type: Sequelize.STRING,
             allowNull: false,
             validate: {
                 notNull: {
@@ -32,7 +33,7 @@ module.exports = (sequelize) => {
             },
         },
         emailAdress: {
-            type: DataTypes.STRING,
+            type: Sequelize.STRING,
             allowNull: false,
             unique: {
                 msg: 'email already exist'
@@ -47,7 +48,7 @@ module.exports = (sequelize) => {
             },
         },
         password: {
-            type: DataTypes.VIRTUAL,  
+            type: Sequelize.VIRTUAL,  
             allowNull: false,
             validate: {
               notNull: {
@@ -63,7 +64,7 @@ module.exports = (sequelize) => {
             }
           },
           confirmedPassword: {
-            type: DataTypes.STRING,
+            type: Sequelize.STRING,
             allowNull: false,
             set(val) {
               if (val === this.password) {
@@ -78,6 +79,10 @@ module.exports = (sequelize) => {
             },
           },
     }, {sequelize});
+
+    User.associate = models => {
+        User.hasMany(models.Course, { foreignKey: 'userId' });
+      };
 
     return User;
 };
