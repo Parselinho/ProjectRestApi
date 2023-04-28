@@ -32,7 +32,7 @@ module.exports = (sequelize) => {
                 },
             },
         },
-        emailAdress: {
+        emailAddress: {
             type: Sequelize.STRING,
             allowNull: false,
             unique: {
