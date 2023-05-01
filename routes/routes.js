@@ -41,6 +41,7 @@ router.post('/users', asyncHandler(async (req, res, next) => {
 // Get all courses with associated user info
 router.get('/courses', asyncHandler(async (req, res) => {
   const courses = await Course.findAll({
+    attributes: { exclude: ['createdAt', 'updatedAt'] },
     include: [
       {
         model: User,
@@ -74,6 +75,7 @@ router.post('/courses', authenticateUser, asyncHandler(async (req, res, next) =>
 router.route('/courses/:id')
   .get(asyncHandler(async (req, res) => {
     const course = await Course.findByPk(req.params.id, {
+      attributes: { exclude: ['createdAt', 'updatedAt'] },
       include: [{ model: User, attributes: ['id', 'firstName', 'lastName', 'emailAddress'] }]
     });
     // If the course exists, send it as JSON; otherwise, send a 404 error
