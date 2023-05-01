@@ -1,11 +1,13 @@
-// Handler function to wrap each route.
+// Handler function to wrap each route with error handling.
 exports.asyncHandler = (cb) => {
-    return async (req, res, next) => {
-      try {
-        await cb(req, res, next);
-      } catch (error) {
-        // Forward error to the global error handler
-        next(error);
-      }
+  // Return an asynchronous function that wraps the callback function.
+  return async (req, res, next) => {
+    try {
+      // Call the callback function with the request, response, and next arguments.
+      await cb(req, res, next);
+    } catch (error) {
+      // If an error is thrown, pass it to the global error handler.
+      next(error);
     }
   }
+}
