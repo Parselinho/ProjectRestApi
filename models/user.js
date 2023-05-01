@@ -6,12 +6,9 @@ const {
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
+    // Define associations
     static associate(models) {
+      // A user has many courses
       this.hasMany(models.Course, {
         foreignKey: {
           fieldName: 'userId',
@@ -49,23 +46,24 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       unique: {
-        msg: 'email already exist'
+        msg: 'Email already exists'
       },
       validate: {
         notNull: {
-          msg: 'Mail Required'
+          msg: 'Email is required'
         },
         notEmpty: {
           msg: 'Please provide an email address'
         },
         isEmail: {
-          msg: 'Provide a valid email'
+          msg: 'Please provide a valid email address'
+        }
       }
-     }
     },
     password: {
       type: DataTypes.STRING,
       allowNull: false,
+      // Hash the password before storing it in the database
       set(val) {
         if (val) {
           const hashedPassword = bcrypt.hashSync(val, 10);
